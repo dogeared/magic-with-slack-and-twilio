@@ -42,6 +42,7 @@ public class SlackController {
 
         attachment.put("image_url", magicCardService.getRandomMagicCardImage());
 
+        ret.put("response_type", "in_channel");
         ret.put("attachments", attachments);
         return ret;
     }
