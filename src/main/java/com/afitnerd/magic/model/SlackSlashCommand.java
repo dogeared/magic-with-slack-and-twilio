@@ -29,6 +29,9 @@ public class SlackSlashCommand {
     @JsonProperty("response_url")
     private String responseUrl;
 
+    @JsonProperty("trigger_id")
+    private String triggerId;
+
     public String getToken() {
         return token;
     }
@@ -107,5 +110,13 @@ public class SlackSlashCommand {
 
     public void setResponseUrl(String responseUrl) {
         this.responseUrl = responseUrl;
+    }
+
+    public String getTriggerId() {
+        return triggerId;
+    }
+
+    public void setTriggerId(String triggerId) {
+        this.triggerId = triggerId;
     }
 }
