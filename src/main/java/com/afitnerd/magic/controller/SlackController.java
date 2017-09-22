@@ -22,11 +22,13 @@ public class SlackController {
 
     private static final Logger log = LoggerFactory.getLogger(SlackController.class);
 
-    @Autowired
     MagicCardService magicCardService;
-
-    @Autowired
     SlackResponseService slackResponseService;
+
+    public SlackController(MagicCardService magicCardService, SlackResponseService slackResponseService) {
+        this.magicCardService = magicCardService;
+        this.slackResponseService = slackResponseService;
+    }
 
     @RequestMapping(
         value = "/slack", method = RequestMethod.POST,
