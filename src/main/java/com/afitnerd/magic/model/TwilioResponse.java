@@ -1,5 +1,6 @@
 package com.afitnerd.magic.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -29,6 +30,7 @@ public class TwilioResponse {
         private String body;
 
         @JacksonXmlProperty(localName = "Media")
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         private String media;
 
         public String getBody() {
