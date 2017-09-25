@@ -5,7 +5,6 @@ import com.afitnerd.magic.service.MagicCardService;
 import com.afitnerd.magic.service.SlackResponseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +36,6 @@ public class SlackController {
     public @ResponseBody
     Map<String, Object> slack(@RequestBody SlackSlashCommand slackSlashCommand) throws IOException {
 
-        return slackResponseService.getInChannelResponseWithImage(magicCardService.getRandomMagicCardImage());
+        return slackResponseService.getInChannelResponseWithImage(magicCardService.getRandomMagicCardImageUrl());
     }
 }

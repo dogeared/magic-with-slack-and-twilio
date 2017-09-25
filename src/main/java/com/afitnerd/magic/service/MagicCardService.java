@@ -4,5 +4,7 @@ import java.io.IOException;
 
 public interface MagicCardService {
 
-    String getRandomMagicCardImage() throws IOException;
+    String getRandomMagicCardImageUrl() throws IOException;
+    String getRandomMagicCardImageId() throws IOException;
+    byte[] getRandomMagicCardBytes(String cardId) throws IOException;
 }
