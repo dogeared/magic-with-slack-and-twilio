@@ -7,7 +7,8 @@ import com.afitnerd.magic.service.MagicCardService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.fluent.Request;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -37,12 +37,16 @@ public class TwilioController {
     ObjectMapper mapper = new ObjectMapper();
     TypeReference<BitlyResponse> typeReference = new TypeReference<BitlyResponse>() {};
 
+    private static final Logger log = LoggerFactory.getLogger(TwilioController.class);
+
     public TwilioController(MagicCardService magicCardService) {
         this.magicCardService = magicCardService;
     }
 
     @RequestMapping(value = "/twilio", method = RequestMethod.POST, headers = "Accept=application/xml")
     public TwilioResponse twilio(@ModelAttribute TwilioRequest command) throws IOException {
+
+        log.info(mapper.writeValueAsString(command));
 
         TwilioResponse response = new TwilioResponse();
         String body = (command.getBody() != null) ? command.getBody().trim().toLowerCase() : "";

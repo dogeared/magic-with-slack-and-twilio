@@ -10,7 +10,7 @@ public class BitlyResponse {
     @JsonProperty("status_code")
     private int statusCode;
 
-    @JsonProperty("status_text")
+    @JsonProperty("status_txt")
     private String statusText;
 
     public BitlyData getBitlyData() {
