@@ -1,5 +1,6 @@
 package com.afitnerd.magic.controller;
 
+import com.afitnerd.magic.model.BitlyResponse;
 import com.afitnerd.magic.model.TwilioRequest;
 import com.afitnerd.magic.model.TwilioResponse;
 import com.afitnerd.magic.service.MagicCardService;
@@ -27,12 +28,14 @@ public class TwilioController {
     @Value("#{ @environment['bitly.access.token'] }")
     protected String bitlyAccessToken;
 
-    ObjectMapper mapper = new ObjectMapper();
-    TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
-
     static final String BITLY_URL = "https://api-ssl.bitly.com/v3/shorten";
     static final String BITLY_ACCESS_TOKEN_PARAM = "access_token";
     static final String BITLY_LONG_URL_PARAM = "longUrl";
+
+    static final String MAGIC_COMMAND = "magic";
+
+    ObjectMapper mapper = new ObjectMapper();
+    TypeReference<BitlyResponse> typeReference = new TypeReference<BitlyResponse>() {};
 
     public TwilioController(MagicCardService magicCardService) {
         this.magicCardService = magicCardService;
@@ -40,6 +43,16 @@ public class TwilioController {
 
     @RequestMapping(value = "/twilio", method = RequestMethod.POST, headers = "Accept=application/xml")
     public TwilioResponse twilio(@ModelAttribute TwilioRequest command) throws IOException {
+
+        TwilioResponse response = new TwilioResponse();
+        String body = (command.getBody() != null) ? command.getBody().trim().toLowerCase() : "";
+
+        if (!MAGIC_COMMAND.equals(body)) {
+            response
+                .getMessage()
+                .setBody("Send\n\n" + MAGIC_COMMAND + "\n\nto get a random Magic the Gathering card sent to you.");
+            return response;
+        }
 
         String imageUrl = magicCardService.getRandomMagicCardImage();
 
@@ -53,10 +66,9 @@ public class TwilioController {
             .getEntity()
             .getContent();
 
-        Map<String, Object> bitlyResponse = mapper.readValue(is, typeReference);
-        String bitly = (String)((Map<String, Object>)bitlyResponse.get("data")).get("url");
+        BitlyResponse bitlyResponse = mapper.readValue(is, typeReference);
+        String bitly = bitlyResponse.getBitlyData().getUrl();
 
-        TwilioResponse response = new TwilioResponse();
         response.getMessage().setMedia(bitly);
         return response;
     }
