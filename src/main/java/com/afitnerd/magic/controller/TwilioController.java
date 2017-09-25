@@ -33,7 +33,7 @@ public class TwilioController {
         this.magicCardService = magicCardService;
     }
 
-    @RequestMapping(value = "/twilio", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(value = "/twilio", method = RequestMethod.POST, headers = "Accept=application/xml", produces=MediaType.APPLICATION_XML_VALUE)
     public TwilioResponse twilio(@ModelAttribute TwilioRequest command, HttpServletRequest req) throws IOException {
 
         log.debug(mapper.writeValueAsString(command));
@@ -44,7 +44,7 @@ public class TwilioController {
         if (!MAGIC_COMMAND.equals(body)) {
             response
                 .getMessage()
-                .setBody("Send '" + MAGIC_COMMAND + "', to get a random Magic the Gathering card sent to you.");
+                .setBody("Send\n\n" + MAGIC_COMMAND + "\n\nto get a random Magic the Gathering card sent to you.");
             return response;
         }
 
