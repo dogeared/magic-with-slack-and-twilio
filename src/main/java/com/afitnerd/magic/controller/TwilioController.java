@@ -1,23 +1,20 @@
 package com.afitnerd.magic.controller;
 
-import com.afitnerd.magic.model.BitlyResponse;
 import com.afitnerd.magic.model.TwilioRequest;
 import com.afitnerd.magic.model.TwilioResponse;
 import com.afitnerd.magic.service.MagicCardService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLEncoder;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -25,17 +22,10 @@ public class TwilioController {
 
     MagicCardService magicCardService;
 
-    @Value("#{ @environment['bitly.access.token'] }")
-    protected String bitlyAccessToken;
-
-    static final String BITLY_URL = "https://api-ssl.bitly.com/v3/shorten";
-    static final String BITLY_ACCESS_TOKEN_PARAM = "access_token";
-    static final String BITLY_LONG_URL_PARAM = "longUrl";
-
     static final String MAGIC_COMMAND = "magic";
+    static final String MAGIC_PROXY_PATH = "/magic_proxy";
 
     ObjectMapper mapper = new ObjectMapper();
-    TypeReference<BitlyResponse> typeReference = new TypeReference<BitlyResponse>() {};
 
     private static final Logger log = LoggerFactory.getLogger(TwilioController.class);
 
@@ -44,9 +34,9 @@ public class TwilioController {
     }
 
     @RequestMapping(value = "/twilio", method = RequestMethod.POST, headers = "Accept=application/xml")
-    public TwilioResponse twilio(@ModelAttribute TwilioRequest command) throws IOException {
+    public TwilioResponse twilio(@ModelAttribute TwilioRequest command, HttpServletRequest req) throws IOException {
 
-        log.info(mapper.writeValueAsString(command));
+        log.debug(mapper.writeValueAsString(command));
 
         TwilioResponse response = new TwilioResponse();
         String body = (command.getBody() != null) ? command.getBody().trim().toLowerCase() : "";
@@ -58,22 +48,18 @@ public class TwilioController {
             return response;
         }
 
-        String imageUrl = magicCardService.getRandomMagicCardImage();
-
-        // bitly it up
-        String bitlyUrl = BITLY_URL + "?" +
-            BITLY_ACCESS_TOKEN_PARAM + "=" + bitlyAccessToken + "&" +
-            BITLY_LONG_URL_PARAM + "=" + URLEncoder.encode(imageUrl, "UTF-8");
-        InputStream is = Request.Get(bitlyUrl)
-            .execute()
-            .returnResponse()
-            .getEntity()
-            .getContent();
-
-        BitlyResponse bitlyResponse = mapper.readValue(is, typeReference);
-        String bitly = bitlyResponse.getBitlyData().getUrl();
-
-        response.getMessage().setMedia(bitly);
+        StringBuffer requestUrl = req.getRequestURL();
+        String imageProxyUrl =
+            requestUrl.substring(0, requestUrl.lastIndexOf("/")) +
+            MAGIC_PROXY_PATH + "/" +
+            magicCardService.getRandomMagicCardImageId();
+        response.getMessage().setMedia(imageProxyUrl);
         return response;
     }
+
+    @RequestMapping(value = MAGIC_PROXY_PATH + "/{card_id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] magicProxy(@PathVariable("card_id") String cardId) throws IOException {
+        return magicCardService.getRandomMagicCardBytes(cardId);
+    }
+
 }
