@@ -44,7 +44,7 @@ public class TwilioController {
         if (!MAGIC_COMMAND.equals(body)) {
             response
                 .getMessage()
-                .setBody("Send:" + MAGIC_COMMAND + ", to get a random Magic the Gathering card sent to you.");
+                .setBody("Send '" + MAGIC_COMMAND + "', to get a random Magic the Gathering card sent to you.");
             return response;
         }
 
