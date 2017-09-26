@@ -2,13 +2,12 @@ package com.afitnerd.magic.controller;
 
 import com.afitnerd.magic.model.TwilioRequest;
 import com.afitnerd.magic.model.TwilioResponse;
-import com.afitnerd.magic.service.MagicCardService;
+import com.afitnerd.magic.service.MagicCardProxyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,17 +19,16 @@ import java.io.IOException;
 @RequestMapping("/api/v1")
 public class TwilioController {
 
-    MagicCardService magicCardService;
+    private MagicCardProxyService magicCardProxyService;
 
     static final String MAGIC_COMMAND = "magic";
-    static final String MAGIC_PROXY_PATH = "/magic_proxy";
 
     ObjectMapper mapper = new ObjectMapper();
 
     private static final Logger log = LoggerFactory.getLogger(TwilioController.class);
 
-    public TwilioController(MagicCardService magicCardService) {
-        this.magicCardService = magicCardService;
+    public TwilioController(MagicCardProxyService magicCardProxyService) {
+        this.magicCardProxyService = magicCardProxyService;
     }
 
     @RequestMapping(value = "/twilio", method = RequestMethod.POST, headers = "Accept=application/xml", produces=MediaType.APPLICATION_XML_VALUE)
@@ -48,18 +46,8 @@ public class TwilioController {
             return response;
         }
 
-        StringBuffer requestUrl = req.getRequestURL();
-        String imageProxyUrl =
-            requestUrl.substring(0, requestUrl.lastIndexOf("/")) +
-            MAGIC_PROXY_PATH + "/" +
-            magicCardService.getRandomMagicCardImageId();
+        String imageProxyUrl = magicCardProxyService.getRandomImageProxyUrl(req);
         response.getMessage().setMedia(imageProxyUrl);
         return response;
     }
-
-    @RequestMapping(value = MAGIC_PROXY_PATH + "/{card_id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] magicProxy(@PathVariable("card_id") String cardId) throws IOException {
-        return magicCardService.getRandomMagicCardBytes(cardId);
-    }
-
 }
