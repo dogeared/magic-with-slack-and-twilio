@@ -1,25 +1,26 @@
 package com.afitnerd.magic.service;
 
+import com.afitnerd.magic.config.AppConfig;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+
+import static com.afitnerd.magic.config.AppConfig.API_PATH;
 
 @Service
 public class MagicCardProxyServiceImpl implements MagicCardProxyService {
 
+    private AppConfig appConfig;
     private MagicCardService magicCardService;
 
-    public MagicCardProxyServiceImpl(MagicCardService magicCardService) {
+    public MagicCardProxyServiceImpl(AppConfig appConfig, MagicCardService magicCardService) {
+        this.appConfig = appConfig;
         this.magicCardService = magicCardService;
     }
 
     @Override
-    public String getRandomImageProxyUrl(HttpServletRequest req) throws IOException {
-        StringBuffer requestUrl = req.getRequestURL();
-        String imageProxyUrl = requestUrl.substring(0, requestUrl.lastIndexOf("/")) +
-            MAGIC_PROXY_PATH + "/" +
-            magicCardService.getRandomMagicCardImageId();
-        return imageProxyUrl;
+    public String getRandomImageProxyUrl() throws IOException {
+        return appConfig.getBaseUrl() +
+            API_PATH + MAGIC_PROXY_PATH + "/" + magicCardService.getRandomMagicCardImageId();
     }
 }

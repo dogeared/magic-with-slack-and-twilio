@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+import static com.afitnerd.magic.config.AppConfig.API_PATH;
 import static com.afitnerd.magic.service.MagicCardProxyService.MAGIC_PROXY_PATH;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(API_PATH)
 public class MagicCardProxyController {
 
     private MagicCardService magicCardService;

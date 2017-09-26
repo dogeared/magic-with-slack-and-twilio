@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.Map;
 
+import static com.afitnerd.magic.config.AppConfig.API_PATH;
+
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(API_PATH)
 public class SlackController {
 
     private static final Logger log = LoggerFactory.getLogger(SlackController.class);
