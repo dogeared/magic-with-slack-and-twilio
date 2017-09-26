@@ -6,7 +6,13 @@
 	<groupId>com.afitnerd</groupId>
 	<artifactId>magic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <modules>
+        <module>magic-config</module>
+        <module>magic-api</module>
+        <module>magic-impl</module>
+        <module>magic-app</module>
+    </modules>
+    <packaging>pom</packaging>
 
 	<name>magic</name>
 	<description>Demo project for Spring Boot</description>
@@ -38,14 +44,25 @@
             <artifactId>fluent-hc</artifactId>
             <version>4.5.9</version>
         </dependency>
-	</dependencies>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.afitnerd</groupId>
+                <artifactId>magic-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.afitnerd</groupId>
+                <artifactId>magic-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.afitnerd</groupId>
+                <artifactId>magic-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
