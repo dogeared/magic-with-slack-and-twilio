@@ -14,6 +14,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>fluent-hc</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.afitnerd</groupId>
             <artifactId>magic-config</artifactId>
         </dependency>
@@ -22,5 +30,4 @@
             <artifactId>magic-api</artifactId>
         </dependency>
     </dependencies>
-
 </project>
