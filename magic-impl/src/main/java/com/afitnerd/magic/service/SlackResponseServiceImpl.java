@@ -2,6 +2,7 @@ package com.afitnerd.magic.service;
 
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +11,16 @@ import java.util.Map;
 @Service
 public class SlackResponseServiceImpl implements SlackResponseService {
 
+    MagicCardService magicCardService;
+
+    public SlackResponseServiceImpl(MagicCardService magicCardService) {
+        this.magicCardService = magicCardService;
+    }
+
     @Override
-    public Map<String, Object> getInChannelResponseWithImage(String imageUrl) {
+    public Map<String, Object> getInChannelResponseWithImage() throws IOException {
         Map<String, Object> attachment = new HashMap<>();
-        attachment.put("image_url", imageUrl);
+        attachment.put("image_url", magicCardService.getRandomMagicCardImageUrl());
 
         List<Map<String, Object>> attachments = new ArrayList<>();
         attachments.add(attachment);

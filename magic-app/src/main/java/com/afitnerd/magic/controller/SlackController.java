@@ -23,11 +23,9 @@ public class SlackController {
 
     private static final Logger log = LoggerFactory.getLogger(SlackController.class);
 
-    MagicCardService magicCardService;
     SlackResponseService slackResponseService;
 
-    public SlackController(MagicCardService magicCardService, SlackResponseService slackResponseService) {
-        this.magicCardService = magicCardService;
+    public SlackController(SlackResponseService slackResponseService) {
         this.slackResponseService = slackResponseService;
     }
 
@@ -38,6 +36,6 @@ public class SlackController {
     public @ResponseBody
     Map<String, Object> slack(@RequestBody SlackSlashCommand slackSlashCommand) throws IOException {
 
-        return slackResponseService.getInChannelResponseWithImage(magicCardService.getRandomMagicCardImageUrl());
+        return slackResponseService.getInChannelResponseWithImage();
     }
 }
