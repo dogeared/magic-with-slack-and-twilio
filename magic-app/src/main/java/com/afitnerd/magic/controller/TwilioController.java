@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 import static com.afitnerd.magic.config.AppConfig.API_PATH;
+import static com.afitnerd.magic.service.TwilioResponseService.MAGIC_COMMAND;
 
 @RestController
 @RequestMapping(API_PATH)
@@ -22,11 +23,8 @@ public class TwilioController {
 
     private TwilioResponseService twilioResponseService;
 
-    static final String MAGIC_COMMAND = "magic";
-
-    ObjectMapper mapper = new ObjectMapper();
-
     private static final Logger log = LoggerFactory.getLogger(TwilioController.class);
+    private ObjectMapper mapper = new ObjectMapper();
 
     public TwilioController(TwilioResponseService twilioResponseService) {
         this.twilioResponseService = twilioResponseService;
@@ -37,6 +35,12 @@ public class TwilioController {
 
         log.debug(mapper.writeValueAsString(req));
 
-        return twilioResponseService.getMagicResponse(req);
+        String body = (req.getBody() != null) ? req.getBody().trim().toLowerCase() : "";
+
+        if (!MAGIC_COMMAND.equals(body)) {
+            return twilioResponseService.getErrorResponse();
+        }
+
+        return twilioResponseService.getMagicResponse();
     }
 }
