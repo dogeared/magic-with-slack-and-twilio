@@ -1,5 +1,6 @@
 package com.afitnerd.magic.controller;
 
+import com.afitnerd.magic.config.AppConfig;
 import com.afitnerd.magic.model.SlackSlashCommand;
 import com.afitnerd.magic.service.MagicCardService;
 import com.afitnerd.magic.service.SlackResponseService;
@@ -23,9 +24,11 @@ public class SlackController {
 
     private static final Logger log = LoggerFactory.getLogger(SlackController.class);
 
-    SlackResponseService slackResponseService;
+    private AppConfig appConfig;
+    private SlackResponseService slackResponseService;
 
-    public SlackController(SlackResponseService slackResponseService) {
+    public SlackController(AppConfig appConfig, SlackResponseService slackResponseService) {
+        this.appConfig = appConfig;
         this.slackResponseService = slackResponseService;
     }
 
@@ -33,8 +36,12 @@ public class SlackController {
         value = "/slack", method = RequestMethod.POST,
         consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public @ResponseBody
-    Map<String, Object> slack(@RequestBody SlackSlashCommand slackSlashCommand) throws IOException {
+    public Map<String, Object> slack(@RequestBody SlackSlashCommand slackSlashCommand) throws IOException {
+        // check token
+        String commandToken = slackSlashCommand.getToken();
+        if (slackSlashCommand.getToken() == null || !slackSlashCommand.getToken().equals(appConfig.getSlackToken())) {
+            return slackResponseService.getErrorResponse();
+        }
 
         return slackResponseService.getInChannelResponseWithImage();
     }

@@ -30,4 +30,11 @@ public class SlackResponseServiceImpl implements SlackResponseService {
         ret.put("attachments", attachments);
         return ret;
     }
+
+    @Override
+    public Map<String, Object> getErrorResponse() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("text", "App Error. Please contact your admin.");
+        return response;
+    }
 }
