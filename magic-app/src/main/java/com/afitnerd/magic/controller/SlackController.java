@@ -1,8 +1,8 @@
 package com.afitnerd.magic.controller;
 
 import com.afitnerd.magic.config.AppConfig;
-import com.afitnerd.magic.model.SlackSlashCommand;
-import com.afitnerd.magic.service.MagicCardService;
+import com.afitnerd.magic.model.slack.SlackResponse;
+import com.afitnerd.magic.model.slack.SlackSlashCommand;
 import com.afitnerd.magic.service.SlackResponseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -38,7 +37,7 @@ public class SlackController {
         value = "/slack", method = RequestMethod.POST,
         consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Map<String, Object> slack(@RequestBody SlackSlashCommand slackSlashCommand) throws IOException {
+    public SlackResponse slack(@RequestBody SlackSlashCommand slackSlashCommand) throws IOException {
 
         log.debug(mapper.writeValueAsString(slackSlashCommand));
 

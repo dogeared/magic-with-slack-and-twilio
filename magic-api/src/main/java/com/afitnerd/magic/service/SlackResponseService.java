@@ -1,10 +1,11 @@
 package com.afitnerd.magic.service;
 
+import com.afitnerd.magic.model.slack.SlackResponse;
+
 import java.io.IOException;
-import java.util.Map;
 
 public interface SlackResponseService {
 
-    Map<String, Object> getInChannelResponseWithImage() throws IOException;
-    Map<String, Object> getErrorResponse();
+    SlackResponse getInChannelResponseWithImage() throws IOException;
+    SlackResponse getErrorResponse();
 }
