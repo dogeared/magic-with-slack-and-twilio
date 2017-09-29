@@ -1,7 +1,6 @@
 package com.afitnerd.magic.service;
 
-import com.afitnerd.magic.model.TwilioRequest;
-import com.afitnerd.magic.model.TwilioResponse;
+import com.afitnerd.magic.model.twilio.TwilioResponse;
 
 import java.io.IOException;
 

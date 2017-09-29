@@ -1,7 +1,7 @@
 package com.afitnerd.magic.controller;
 
-import com.afitnerd.magic.model.TwilioRequest;
-import com.afitnerd.magic.model.TwilioResponse;
+import com.afitnerd.magic.model.twilio.TwilioRequest;
+import com.afitnerd.magic.model.twilio.TwilioResponse;
 import com.afitnerd.magic.service.TwilioResponseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

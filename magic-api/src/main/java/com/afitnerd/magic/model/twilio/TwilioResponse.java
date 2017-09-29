@@ -1,4 +1,4 @@
-package com.afitnerd.magic.model;
+package com.afitnerd.magic.model.twilio;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

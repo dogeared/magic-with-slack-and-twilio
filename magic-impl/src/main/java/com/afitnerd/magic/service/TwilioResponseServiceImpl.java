@@ -1,7 +1,6 @@
 package com.afitnerd.magic.service;
 
-import com.afitnerd.magic.model.TwilioRequest;
-import com.afitnerd.magic.model.TwilioResponse;
+import com.afitnerd.magic.model.twilio.TwilioResponse;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
