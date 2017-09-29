@@ -16,19 +16,19 @@ public class TwilioResponseServiceImpl implements TwilioResponseService {
     }
 
     @Override
-    public TwilioResponse getMagicResponse(TwilioRequest req) throws IOException {
+    public TwilioResponse getMagicResponse() throws IOException {
         TwilioResponse response = new TwilioResponse();
-        String body = (req.getBody() != null) ? req.getBody().trim().toLowerCase() : "";
-
-        if (!MAGIC_COMMAND.equals(body)) {
-            response
-                .getMessage()
-                .setBody("Send\n\n" + MAGIC_COMMAND + "\n\nto get a random Magic the Gathering card sent to you.");
-            return response;
-        }
-
         String imageProxyUrl = magicCardProxyService.getRandomImageProxyUrl();
         response.getMessage().setMedia(imageProxyUrl);
+        return response;
+    }
+
+    @Override
+    public TwilioResponse getErrorResponse() {
+        TwilioResponse response = new TwilioResponse();
+        response
+            .getMessage()
+            .setBody("Send\n\n" + MAGIC_COMMAND + "\n\nto get a random Magic the Gathering card sent to you.");
         return response;
     }
 }

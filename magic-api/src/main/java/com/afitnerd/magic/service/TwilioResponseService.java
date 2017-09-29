@@ -9,5 +9,6 @@ public interface TwilioResponseService {
 
     public static final String MAGIC_COMMAND = "magic";
 
-    TwilioResponse getMagicResponse(TwilioRequest req) throws IOException;
+    TwilioResponse getMagicResponse() throws IOException;
+    TwilioResponse getErrorResponse();
 }
