@@ -1,4 +1,4 @@
-package com.afitnerd.magic.model;
+package com.afitnerd.magic.model.twilio;
 
 public class TwilioRequest {
     private String toCountry;
