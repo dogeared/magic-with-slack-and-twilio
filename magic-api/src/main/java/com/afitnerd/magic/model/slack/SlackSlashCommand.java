@@ -1,4 +1,4 @@
-package com.afitnerd.magic.model;
+package com.afitnerd.magic.model.slack;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

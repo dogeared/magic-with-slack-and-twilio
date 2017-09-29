@@ -1,6 +1,6 @@
 package com.afitnerd.magic.converter;
 
-import com.afitnerd.magic.model.SlackSlashCommand;
+import com.afitnerd.magic.model.slack.SlackSlashCommand;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;

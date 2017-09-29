@@ -1,12 +1,11 @@
 package com.afitnerd.magic.service;
 
+import com.afitnerd.magic.model.slack.SlackErrorResponse;
+import com.afitnerd.magic.model.slack.SlackInChannelImageResponse;
+import com.afitnerd.magic.model.slack.SlackResponse;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class SlackResponseServiceImpl implements SlackResponseService {
@@ -18,23 +17,12 @@ public class SlackResponseServiceImpl implements SlackResponseService {
     }
 
     @Override
-    public Map<String, Object> getInChannelResponseWithImage() throws IOException {
-        Map<String, Object> attachment = new HashMap<>();
-        attachment.put("image_url", magicCardService.getRandomMagicCardImageUrl());
-
-        List<Map<String, Object>> attachments = new ArrayList<>();
-        attachments.add(attachment);
-
-        Map<String, Object> ret = new HashMap<>();
-        ret.put("response_type", "in_channel");
-        ret.put("attachments", attachments);
-        return ret;
+    public SlackResponse getInChannelResponseWithImage() throws IOException {
+        return new SlackInChannelImageResponse(magicCardService.getRandomMagicCardImageUrl());
     }
 
     @Override
-    public Map<String, Object> getErrorResponse() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("text", "App Error. Please contact your admin.");
-        return response;
+    public SlackResponse getErrorResponse() {
+        return new SlackErrorResponse();
     }
 }
