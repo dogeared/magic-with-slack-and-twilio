@@ -9,8 +9,8 @@
       "description": "The full url to your heroku app. e.g. https://random-magic-card.herokuapp.com",
       "value": "changeme"
     },
-    "SLACK_TOKEN": {
-      "description": "The configured Slack token for your Slack app definition.",
+    "SLACK_TOKENS": {
+      "description": "Comma separated list of Slack tokens based on which workspaces you've configured this app for.",
       "value": "changeme"
     }
   }
