@@ -1,0 +1,17 @@
+{
+  "name": "Magic with Slack and Twilio",
+  "description": "Show a random Magic the Gathering card image in both Slack and Twilio",
+  "repository": "https://github.com/dogeared/magic-with-slack-and-twilio/tree/master",
+  "keywords": ["spring boot", "solid", "dependency injection"],
+  "success_url": "/",
+  "env": {
+    "BASE_URL": {
+      "description": "The full url to your heroku app. e.g. https://random-magic-card.herokuapp.com",
+      "value": "changeme"
+    },
+    "SLACK_TOKEN": {
+      "description": "The configured Slack token for your Slack app definition.",
+      "value": "changeme"
+    }
+  }
+}
