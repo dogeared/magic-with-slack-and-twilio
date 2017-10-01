@@ -32,7 +32,9 @@ Workspaces and want the app to work in all of them, then you can enter a comma-s
 **Note:** you can put in a dummy placeholder for the `SLACK_TOKENS` for now and update it later when when you set up 
 your Slack app.
 
-### Set up Slack
+From here, you can jump to [Setup Twilio](#setup-twilio) or read on to Setup Slack
+
+### Setup Slack
 
 Navigate to [https://api.slack.com/apps](https://api.slack.com/apps) and click the `Create New App` button to get 
 started:
@@ -81,7 +83,7 @@ You should now be able to issue the slash command in a channel in your Slack org
 
 ![create slack app popup](../../raw/readme_assets/images/slack_slash_command_in_action.png)
 
-### Set up Twilio
+### Setup Twilio
 
 Navgiate to your Twilio [Console Dashboard](https://www.twilio.com/console)
 
