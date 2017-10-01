@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.Map;
 
 import static com.afitnerd.magic.config.AppConfig.API_PATH;
 
@@ -44,7 +43,7 @@ public class SlackController {
 
         // check token
         String commandToken = slackSlashCommand.getToken();
-        if (slackSlashCommand.getToken() == null || !slackSlashCommand.getToken().equals(appConfig.getSlackToken())) {
+        if (commandToken == null || !appConfig.getSlackTokens().contains(commandToken)) {
             return slackResponseService.getErrorResponse();
         }
 
