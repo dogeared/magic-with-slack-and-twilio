@@ -3,14 +3,25 @@ package com.afitnerd.magic.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class AppConfig {
 
     @Value("#{ @environment['base.url'] }")
-    protected String baseUrl;
+    private String baseUrl;
 
-    @Value("#{ @environment['slack.token'] }")
-    protected String slackToken;
+    @Value("#{ @environment['slack.tokens'] }")
+    private String[] slackTokensArray;
+
+    private List<String> slackTokens;
+
+    @PostConstruct
+    private void setup() {
+        slackTokens = Arrays.asList(slackTokensArray);
+    }
 
     public static final String API_PATH = "/api/v1";
 
@@ -18,7 +29,7 @@ public class AppConfig {
         return baseUrl;
     }
 
-    public String getSlackToken() {
-        return slackToken;
+    public List<String> getSlackTokens() {
+        return slackTokens;
     }
 }
