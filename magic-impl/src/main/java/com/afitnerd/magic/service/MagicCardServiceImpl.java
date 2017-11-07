@@ -20,6 +20,12 @@ public class MagicCardServiceImpl implements MagicCardService {
         String page = Request.Get(MAGIC_URL).execute().returnContent().asString();
 
         int imgBegIndex = page.indexOf("../../Handlers/Image");
+
+        // The MGT site is down
+        if (imgBegIndex < 0) {
+            return "/images/maintenance.png";
+        }
+
         int imgEndIndex = page.indexOf("\" id", imgBegIndex);
         String imgRef = page.substring(imgBegIndex+5, imgEndIndex);
         imgRef = imgRef.replace("&amp;", "&");
