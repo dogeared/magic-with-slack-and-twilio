@@ -1,5 +1,6 @@
 package com.afitnerd.magic.service;
 
+import com.afitnerd.magic.config.AppConfig;
 import org.apache.http.client.fluent.Request;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,12 @@ public class MagicCardServiceImpl implements MagicCardService {
     private static final int CARD_ID_PARAM_LENGTH = CARD_ID_PARAM.length();
 
     private static final String IMAGE_HANDLER_PATH = "../../Handlers/Image";
+
+    private AppConfig appConfig;
+
+    public MagicCardServiceImpl(AppConfig appConfig) {
+        this.appConfig = appConfig;
+    }
 
     @Override
     public String getRandomMagicCardImageUrl() throws IOException {
@@ -48,7 +55,7 @@ public class MagicCardServiceImpl implements MagicCardService {
 
     private String extractImageRef(String page) throws IOException {
         if (isMGTDown(page)) {
-            return "/images/maintenance.png";
+            return appConfig.getBaseUrl() + "/images/maintenance.png";
         }
         int imgBegIndex = page.indexOf("../../Handlers/Image");
         int imgEndIndex = page.indexOf("\" id", imgBegIndex);

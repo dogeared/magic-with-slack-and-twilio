@@ -22,7 +22,7 @@ public class MagicCardProxyServiceImpl implements MagicCardProxyService {
     public String getRandomImageProxyUrl() throws IOException {
         String cardId = magicCardService.getRandomMagicCardImageId();
         if (cardId == null) {
-            return "/images/maintenance.png";
+            return appConfig.getBaseUrl() + "/images/maintenance.png";
         }
         return appConfig.getBaseUrl() + AppConfig.API_PATH + MAGIC_PROXY_PATH + "/" + cardId;
     }
