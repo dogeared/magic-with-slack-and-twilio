@@ -20,7 +20,9 @@ public class AppConfig {
 
     @PostConstruct
     private void setup() {
-        slackTokens = Arrays.asList(slackTokensArray);
+        if (slackTokensArray != null) {
+            slackTokens = Arrays.asList(slackTokensArray);
+        }
     }
 
     public static final String API_PATH = "/api/v1";
