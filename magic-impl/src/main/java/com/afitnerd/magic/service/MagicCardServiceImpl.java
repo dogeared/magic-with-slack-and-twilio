@@ -15,27 +15,18 @@ public class MagicCardServiceImpl implements MagicCardService {
     private static final String CARD_ID_PARAM = "multiverseid=";
     private static final int CARD_ID_PARAM_LENGTH = CARD_ID_PARAM.length();
 
+    private static final String IMAGE_HANDLER_PATH = "../../Handlers/Image";
+
     @Override
     public String getRandomMagicCardImageUrl() throws IOException {
-        String page = Request.Get(MAGIC_URL).execute().returnContent().asString();
-
-        int imgBegIndex = page.indexOf("../../Handlers/Image");
-
-        // The MGT site is down
-        if (imgBegIndex < 0) {
-            return "/images/maintenance.png";
-        }
-
-        int imgEndIndex = page.indexOf("\" id", imgBegIndex);
-        String imgRef = page.substring(imgBegIndex+5, imgEndIndex);
-        imgRef = imgRef.replace("&amp;", "&");
-
-        return MAGIC_BASE_URL + imgRef;
+        return extractImageRef(getPageWithImage());
     }
 
     @Override
     public String getRandomMagicCardImageId() throws IOException {
-        String cardUrl = getRandomMagicCardImageUrl();
+        String page = getPageWithImage();
+        if (isMGTDown(page)) { return null; }
+        String cardUrl = extractImageRef(page);
         int begIdx = cardUrl.indexOf(CARD_ID_PARAM) + CARD_ID_PARAM_LENGTH;
         int endIndex = cardUrl.indexOf("&", begIdx);
         return cardUrl.substring(begIdx, endIndex);
@@ -45,5 +36,24 @@ public class MagicCardServiceImpl implements MagicCardService {
     public byte[] getRandomMagicCardBytes(String cardId) throws IOException {
         String cardUrl = MAGIC_IMAGE_URL + "?" + CARD_ID_PARAM + cardId + "&type=card";
         return Request.Get(cardUrl).execute().returnContent().asBytes();
+    }
+
+    private String getPageWithImage() throws IOException {
+        return Request.Get(MAGIC_URL).execute().returnContent().asString();
+    }
+
+    private boolean isMGTDown(String page) {
+        return page.indexOf(IMAGE_HANDLER_PATH) < 0;
+    }
+
+    private String extractImageRef(String page) throws IOException {
+        if (isMGTDown(page)) {
+            return "/images/maintenance.png";
+        }
+        int imgBegIndex = page.indexOf("../../Handlers/Image");
+        int imgEndIndex = page.indexOf("\" id", imgBegIndex);
+        String imgRef = page.substring(imgBegIndex+5, imgEndIndex);
+        imgRef = imgRef.replace("&amp;", "&");
+        return MAGIC_BASE_URL + imgRef;
     }
 }

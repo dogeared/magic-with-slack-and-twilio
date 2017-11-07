@@ -20,7 +20,10 @@ public class MagicCardProxyServiceImpl implements MagicCardProxyService {
 
     @Override
     public String getRandomImageProxyUrl() throws IOException {
-        return appConfig.getBaseUrl() +
-            AppConfig.API_PATH + MAGIC_PROXY_PATH + "/" + magicCardService.getRandomMagicCardImageId();
+        String cardId = magicCardService.getRandomMagicCardImageId();
+        if (cardId == null) {
+            return "/images/maintenance.png";
+        }
+        return appConfig.getBaseUrl() + AppConfig.API_PATH + MAGIC_PROXY_PATH + "/" + cardId;
     }
 }
